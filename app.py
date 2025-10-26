@@ -10,7 +10,7 @@ print("Starting application...")
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-# 移除 wechatpy 相关代码
+# 移除 wechatpy
 # from wechatpy import WeChatClient
 # wechat_client = WeChatClient('your_appid', 'your_appsecret')
 
@@ -36,10 +36,9 @@ def init_db():
     conn.commit()
     conn.close()
 
-# 替换微信提醒为邮件提醒
 def send_reminder_email(recipient, subject, message):
-    sender_email = "your_email@gmail.com"
-    sender_password = "your_app_password"
+    sender_email = "your_email@gmail.com"  # 替换为你的 Gmail
+    sender_password = "your_app_password"  # 替换为应用专用密码
     msg = MIMEText(message)
     msg['Subject'] = subject
     msg['From'] = sender_email
