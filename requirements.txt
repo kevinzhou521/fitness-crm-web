@@ -1,5 +1,6 @@
 --find-links https://download.pytorch.org/whl/cpu/torch_stable.html
 --find-links https://github.com/explosion/wheel-files/releases/download/pandas-wheels/
+--only-binary :all:  # 强制使用预编译 wheel
 flask==3.0.0
 pandas==2.0.0
 gunicorn==22.0.0
