@@ -10,10 +10,6 @@ print("Starting application...")
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-# 移除 wechatpy
-# from wechatpy import WeChatClient
-# wechat_client = WeChatClient('your_appid', 'your_appsecret')
-
 def get_db_connection():
     conn = sqlite3.connect('fitness_clients.db')
     conn.row_factory = sqlite3.Row
