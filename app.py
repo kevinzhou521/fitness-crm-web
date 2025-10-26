@@ -5,13 +5,14 @@ import smtplib
 from email.mime.text import MIMEText
 from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Thread
-from wechatpy import WeChatClient
 
 print("Starting application...")
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-wechat_client = WeChatClient('your_appid', 'your_appsecret')
+# 移除 wechatpy 相关代码
+# from wechatpy import WeChatClient
+# wechat_client = WeChatClient('your_appid', 'your_appsecret')
 
 def get_db_connection():
     conn = sqlite3.connect('fitness_clients.db')
@@ -35,19 +36,31 @@ def init_db():
     conn.commit()
     conn.close()
 
-def send_wechat_reminder(openid, message):
-    wechat_client.message.send_text(openid, message)
+# 替换微信提醒为邮件提醒
+def send_reminder_email(recipient, subject, message):
+    sender_email = "your_email@gmail.com"
+    sender_password = "your_app_password"
+    msg = MIMEText(message)
+    msg['Subject'] = subject
+    msg['From'] = sender_email
+    msg['To'] = recipient
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, recipient, msg.as_string())
+    except Exception as e:
+        print(f"邮件发送失败: {e}")
 
 def check_renewal_reminders():
     conn = get_db_connection()
     today = datetime.now()
     week_later = today + timedelta(days=7)
-    clients = conn.execute("SELECT name, renewal_date, openid FROM clients WHERE renewal_date <= ?", (week_later.strftime('%Y-%m-%d'),)).fetchall()
+    clients = conn.execute("SELECT name, renewal_date, contact FROM clients WHERE renewal_date <= ?", (week_later.strftime('%Y-%m-%d'),)).fetchall()
     conn.close()
     for client in clients:
         renewal_date = datetime.strptime(client['renewal_date'], '%Y-%m-%d')
         if today <= renewal_date <= week_later:
-            send_wechat_reminder(client['openid'], f"客户 {client['name']} 续课提醒：{client['renewal_date']}")
+            send_reminder_email(client['contact'], f"续课提醒: {client['name']}", f"客户 {client['name']} 的续课时间为 {client['renewal_date']}，请联系！")
 
 @app.route('/')
 def index():
