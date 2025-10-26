@@ -1,0 +1,9 @@
+body { font-family: Arial, sans-serif; margin: 20px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+form { max-width: 500px; }
+input, button { margin: 5px 0; padding: 8px; width: 100%; box-sizing: border-box; }
+button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+a { color: #0066cc; text-decoration: none; }
+@media (max-width: 600px) { table, th, td { font-size: 14px; } }

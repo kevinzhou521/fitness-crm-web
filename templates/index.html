@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>健身教练客户管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>客户管理系统</h1>
+    <h2>本月统计</h2>
+    <p>预计收入: {{ income }} 元</p>
+    <p>预计支出（场地）: {{ expense }} 元</p>
+    <p>预计净收入: {{ income - expense }} 元</p>
+
+    <h2>客户列表</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>姓名</th>
+            <th>联系方式</th>
+            <th>续课时间</th>
+            <th>剩余课时</th>
+            <th>续费金额</th>
+            <th>剩余场地课时</th>
+            <th>操作</th>
+        </tr>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.id }}</td>
+            <td>{{ client.name }}</td>
+            <td>{{ client.contact }}</td>
+            <td>{{ client.renewal_date }}</td>
+            <td>{{ client.remaining_sessions }}</td>
+            <td>{{ client.renewal_amount }}</td>
+            <td>{{ client.remaining_venue_sessions }}</td>
+            <td>
+                <a href="/update/{{ client.id }}">编辑</a>
+                <a href="/delete/{{ client.id }}" onclick="return confirm('确定删除？')">删除</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="/add">添加新客户</a></p>
+    <p><a href="/check_reminders">检查续课提醒</a></p>
+</body>
+</html>

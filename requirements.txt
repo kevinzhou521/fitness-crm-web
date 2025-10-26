@@ -1,0 +1,4 @@
+flask==2.3.3
+pandas==2.2.2
+gunicorn==22.0.0
+apscheduler==3.10.4
